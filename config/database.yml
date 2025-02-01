@@ -88,9 +88,9 @@ production:
   adapter: postgresql # or mysql2, depending on your database
   encoding: unicode
   database: <%= ENV['DATABASE_NAME'] %>
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: <%= ENV['DATABASE_USERNAME'] %>
   password: <%= ENV['DATABASE_PASSWORD'] %>
   host: <%= ENV['DATABASE_HOST'] %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   port: 5432 # Default port for PostgreSQL (use 3306 for MySQL)
   sslmode: require # Required for Azure databases
