@@ -2,7 +2,7 @@
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
 ARG RUBY_VERSION=3.1.2
-FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim as base
+FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim AS base
 
 # Rails app lives here
 WORKDIR /rails
@@ -14,18 +14,23 @@ ENV RAILS_ENV="production" \
     BUNDLE_WITHOUT="development"
 
 # Throw-away build stage to reduce size of final image
-FROM base as build
+FROM base AS build
 
-# Install packages needed to build gems
+# Install packages needed to build gems and assets
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential git libpq-dev libvips pkg-config libxml2-dev libxslt1-dev libffi-dev
+    apt-get install --no-install-recommends -y build-essential git libpq-dev libvips pkg-config libxml2-dev libxslt1-dev libffi-dev nodejs
+
+# Update RubyGems to the latest version
+RUN gem update --system
+
+# Install Bundler 2.6.2
+RUN gem install bundler -v 2.6.2
 
 # Install application gems
 COPY Gemfile Gemfile.lock ./
 RUN bundle install && \
     rm -rf ~/.bundle/ "$(BUNDLE_PATH)"/ruby/*/cache "$(BUNDLE_PATH)"/ruby/*/bundler/gems/*/.git && \
     bundle exec bootsnap precompile --gemfile
-
 
 # Copy the rest of the application
 COPY . .
@@ -41,7 +46,7 @@ FROM base
 
 # Install packages needed for deployment
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libvips postgresql-client && \
+    apt-get install --no-install-recommends -y curl libvips postgresql-client nodejs && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Copy built artifacts: gems, application
