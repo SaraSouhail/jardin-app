@@ -32,6 +32,16 @@ RUN bundle install && \
     rm -rf ~/.bundle/ "$(BUNDLE_PATH)"/ruby/*/cache "$(BUNDLE_PATH)"/ruby/*/bundler/gems/*/.git && \
     bundle exec bootsnap precompile --gemfile
 
+# Install system dependencies for nokogiri and other gems
+RUN apt-get update -qq && apt-get install --no-install-recommends -y \
+    build-essential \
+    libxml2-dev \
+    libxslt1-dev \
+    libvips \
+    curl \
+    postgresql-client
+
+
 # Copy the rest of the application
 COPY . .
 
