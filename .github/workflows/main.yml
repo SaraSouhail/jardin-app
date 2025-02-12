@@ -1,0 +1,35 @@
+name: Deploy Rails App to Azure
+
+on:
+  push:
+    branches:
+      - main  # Déploie à chaque push sur main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.2
+        bundler-cache: true
+
+    - name: Install dependencies
+      run: bundle install --without development test
+
+    - name: Precompile assets
+      run: bundle exec rake assets:precompile
+
+    - name: Run database migrations
+      run: bundle exec rake db:migrate RAILS_ENV=production
+
+    - name: Deploy to Azure
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: jardin-app
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
