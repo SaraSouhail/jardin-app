@@ -1,0 +1,39 @@
+<div class="navbar navbar-expand-sm navbar-light navbar-lewagon container-fluid">
+  <div class="ml-auto d-flex">
+    <%= link_to root_path, class: "navbar-brand" do %>
+      <div class="logo">
+        <%= image_tag "garden.svg" %>
+      </div>
+    <% end %>
+    <% if user_signed_in? %>
+    <h2 style="color:green;" class="mt-2" >welcome <%= current_user.first_name %></h2>
+    <% end %>
+  </div>
+
+  <% if user_signed_in? %>
+    <div class="ml-auto d-flex">
+     <%= button_to "Add a garden", new_garden_path, method: :get, class: "btn btn-outline-primary navbar-brand padding-sign_up" %>
+<%= button_to "Edit profile", edit_user_registration_path, method: :get, class: "btn btn-outline-secondary navbar-brand padding-sign_up" %>
+<%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-outline-danger navbar-brand padding-sign_up" %>
+
+    </div>
+
+  <% else %>
+
+  <div class="ml-auto">
+    <%= link_to new_user_session_path, class: "navbar-brand padding-sign_up" do %>
+        Sign In
+    <% end %>
+    <% end %>
+  </div>
+</div>
+
+<style>
+.padding-sign_up{
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  background-color: #1EDD88;
+
+}
+</style>

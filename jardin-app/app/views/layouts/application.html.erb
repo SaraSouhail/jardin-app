@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Garden Manager by sara and khadija</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= favicon_link_tag asset_path("logo_garden.jpg") %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+
+ <!-- Hotjar Tracking Code for https://sara-garden-plant-147911e98dbf.herokuapp.com/ -->
+<script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:3877407,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+  </head>
+
+  <body>
+    <%= render "shared/navbar" %>
+    <div class="content">
+      <%= yield %>
+    </div>
+    <%= render "shared/footer" %>
+    <!-- WARNING: DO NOT DELETE THE LINE BELOW -->
+    <div id="rails-garden-manager-watermark"></div>
+     <p class="notice"><%= notice %></p>
+       <p class="alert"><%= alert %></p>
+       <%= render "shared/flashes" %>
+  </body>
+</html>
